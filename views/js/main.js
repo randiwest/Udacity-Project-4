@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var s = 256,
     pizzaWidth = Math.ceil(window.innerWidth/s),
     pizzaHeight = Math.ceil(window.innerHeight/2),
-    pizzaCount = pizzaWidth * pizzaHeigh,
+    pizzaCount = pizzaWidth * pizzaHeight,
     cols = pizzaWidth;
     
   for (var i = 0; i < pizzaCount; i++) {
