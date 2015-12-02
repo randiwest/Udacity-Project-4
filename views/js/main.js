@@ -488,10 +488,15 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.getElementsByClassName('mover');
-  var top = document.body.scrollTop;
+  var items = document.getElementsByClassName('mover'),
+    top = document.body.scrollTop,
+    positionArray = [];
+
+  for (var i = 0; i < 5; i++) {
+    positionArray.push( Math.sin((top / 1250) + i));
+  }
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((top / 1250) + (i % 5));
+    var phase = positionArray[i % 5];
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -515,6 +520,9 @@ document.addEventListener('DOMContentLoaded', function() {
     pizzaHeight = Math.ceil(window.innerHeight/2),
     pizzaCount = pizzaWidth * pizzaHeight,
     cols = pizzaWidth;
+
+    console.log(pizzaWidth);
+    console.log(pizzaHeight);
     
   for (var i = 0; i < pizzaCount; i++) {
     var elem = document.createElement('img');
