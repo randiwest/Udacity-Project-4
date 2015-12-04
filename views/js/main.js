@@ -421,7 +421,14 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-  function changePizzaSizes(size) {
+  /*This function has been greatly simplified as the original had a substantial
+  amount of unnecessary code.  The original code had a DetermineDx function 
+  calculating the size difference in pixels between the old and new pizza size 
+  after changing the slider value.  The code has now been adjusted to use the 
+  three known size options and apply the correct percentage to the widths as it
+  isn't neccessary to know the preveious size.*/
+
+  function changePizzaSizes(size) {S
     switch(size) {
         case "1":
             newWidth = 25;
@@ -435,7 +442,7 @@ var resizePizzas = function(size) {
         default:
             console.log("bug in sizeSwitcher");
     }
-
+    //Changed 
     var randomPizzas = document.getElementsByClassName('randomPizzaContainer');
 
     for (var i = 0; i < randomPizzas.length; i++) {
