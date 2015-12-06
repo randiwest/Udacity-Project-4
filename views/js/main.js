@@ -428,7 +428,7 @@ var resizePizzas = function(size) {
   three known size options and apply the correct percentage to the widths as it
   isn't neccessary to know the preveious size.*/
 
-  function changePizzaSizes(size) {S
+  function changePizzaSizes(size) {
     switch(size) {
         case "1":
             newWidth = 25;
@@ -442,9 +442,11 @@ var resizePizzas = function(size) {
         default:
             console.log("bug in sizeSwitcher");
     }
-    //Changed 
-    var randomPizzas = document.getElementsByClassName('randomPizzaContainer');
+    /*Made randomPizzas a variable to prevent it being calculated each time in 
+    the loop and Changed querySelectorAll to getElementsByClassName as it's 
+    more efficient*/
 
+    var randomPizzas = document.getElementsByClassName('randomPizzaContainer');
     for (var i = 0; i < randomPizzas.length; i++) {
         randomPizzas[i].style.width = newWidth + "%";
     }
@@ -492,26 +494,35 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 
 // Moves the sliding background pizzas based on scroll position
 
+/*Created a variable named animating to track when requestAnimationFrame needs
+to run*/
 var animating = false;
 
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
+  //Changed querySelectorAll to getElementsByClassName as it's more efficient
   var items = document.getElementsByClassName('mover'),
+
+    //Made top a variable to prevent it being calculated each time in the for loop
     top = (document.body.scrollTop / 1250),
+
+    /*Created positionArray to hold possible values for phase as there are only 5
+    possible values.  Created a separate loop to calculate these values.*/
     positionArray = [];
 
   for (var i = 0; i < 5; i++) {
     positionArray.push( Math.sin((top) + i));
   }
 
+  //Used translate3d to promote pizzas to new layer to improve performane
   for (var i = 0; i < items.length; i++) {
     var phase = positionArray[i % 5];
-    //items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
     items[i].style.transform = "translate3d(" + (100 * phase) + "px, 0, 0)";
   }
 
+  //Set animating to false to trigger requestAnimationFrame.
   animating = false;
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -524,9 +535,8 @@ function updatePositions() {
   }
 }
 
-// runs updatePositions on scroll
+// runs animatePizzas on scroll
 window.addEventListener('scroll', animatePizzas);
-
 function animatePizzas() {
   if (!animating) {
     requestAnimationFrame(updatePositions);
@@ -537,12 +547,20 @@ function animatePizzas() {
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
   var s = 256,
+
+    /*Created pizzaElement variable to prevent it from being run in each time in 
+    the for loop*/
     pizzaElement = document.getElementById("movingPizzas1")
+
+    /* Used the window height and width to determine the number of columns and rows
+    of pizzas that are required which dramatically reduces the number of pizzas
+    from 200 and greatly improves performance*/
     pizzaWidth = Math.ceil(window.innerWidth/s),
     pizzaHeight = Math.ceil(window.innerHeight/s),
     pizzaCount = pizzaWidth * pizzaHeight,
     cols = pizzaWidth;
 
+    // Logging pizzaWidth and pizzaHeight for auditing
     console.log(pizzaWidth);
     console.log(pizzaHeight);
     
@@ -552,6 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
+    // Utilizing style.left vs. basicLeft as 
     elem.style.left = (i % cols) * s + 'px';
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     pizzaElement.appendChild(elem);
